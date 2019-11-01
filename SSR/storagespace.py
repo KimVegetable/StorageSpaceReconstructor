@@ -1,3 +1,10 @@
+"""
+@author:    Junho Kim
+@license:   None
+@contact:   rlawnsgh92(at)korea(dot)ac(dot)kr
+@insta:     @dailyjunoat_
+"""
+
 import os
 import struct
 
@@ -8,17 +15,33 @@ class StorageSpace:
         __dp = None  # disk pointer
         __is_parsed = False
 
+        """ for SPACEDB """
+        self.storage_pool_uuid = None
+        self.physical_disk_uuid = None
+        self.physical_disk_format_time = None
+
+        """ for SDBC """
+        self.sdbb_entry_size = None
+        self.next_sdbb_entry_number = None
+        self.sdbb_entry_modified_time = None
+
+        """ for SDBB """
+
     def __del__(self):
         if (self.__dp is not None) and (not self.__dp.closed):
             self.__dp.close()
 
     def __repr__(self):
-        return f"Storage Space <>"
+        return "Storage Space"
 
     def open_disk(self, file_path):
+        """
 
-        # mmap 사용 확인해보긔
-        # File Open
+        :param file_path: Disk Image Path
+        :return: True / False
+        """
+
+        """ disk open """
         if (os.path.exists(file_path)):
             self.__dp = open(file_path, 'rb')
             print(f"[*] \"{file_path}\" Disk open!")
@@ -28,8 +51,12 @@ class StorageSpace:
             return False
 
     def parse_disk(self):
+        """
 
-        ########### MBR ###########
+        :return: None
+        """
+
+        """ MBR """
         self.__dp.seek(0)
         mbr = self.__dp.read(512)
         boot_code = struct.unpack("<446B", mbr[0:446])
@@ -41,7 +68,7 @@ class StorageSpace:
         self.signature = struct.unpack("<H", mbr[510:])[0]
 
         if self.partitions[0][4] == 0xEE:
-            self.__dp.seek(0x200)               # 추후에 GPT 넘어가게 변경
+            self.__dp.seek(0x200)  # 추후에 GPT 넘어가게 변경
 
 
         """ GPT """
@@ -56,30 +83,98 @@ class StorageSpace:
         self.__dp.seek(partition_start_offset)
         spacedb = self.__dp.read(0x1000)
         if self.__parse_spacedb(spacedb):
-            print("[*] SPACEDB Parsing Success")
+            print("[*] SPACEDB Parsing Success.")
         else:
-            print("[*] SPACEDB Parsing Fail")
+            print("[*] SPACEDB Parsing Fail.")
             return False
 
         sdbc = self.__dp.read(0x200)
-        self.__parse_sdbc(sdbc)
-
-        sdbb = self.__dp.read(0x10000)
-        self.__parse_sdbb(sdbb)
-
-    def __parse_spacedb(self, data):
-        if data[0:8] is not b'SPACEDB\x20':
+        if self.__parse_sdbc(sdbc):
+            print("[*] SDBC Parsing Success.")
+        else:
+            print("[*] SDBC Parsing Fail.")
             return False
 
+        sdbb = self.__dp.read(0x10000)
+        if self.__parse_sdbb(sdbb):
+            print("[*] SDBB Parsing Success.")
+        else:
+            print("[*] SDBB Parsing Fail.")
+            return False
 
-        pass
+    def __parse_spacedb(self, data):
+        """
+
+        :param data: SPACEDB raw data(4096 bytes)
+        :return: True / False
+        """
+
+        """ Signature Check """
+        if data[0:8] != b'SPACEDB ':
+            print("[*] SPACEDB Signature is not matching.")
+            return False
+
+        """ Version Check """
+        version = data[0x09]
+        if version == 0x01:  # Windows 8.1, Windows Server 2012
+            self.storage_pool_uuid = data[0x10:0x20]
+            self.physical_disk_uuid = data[0x20:0x30]
+            self.physical_disk_format_time = struct.unpack('<Q', data[0x58:0x60])[0]
+        elif version == 0x02:  # Windows 10, Windows Server 2016
+            self.physical_disk_format_time = struct.unpack('<Q', data[0x18:0x20])[0]
+            self.storage_pool_uuid = data[0x20:0x30]
+            self.physical_disk_uuid = data[0x30:0x40]
+        else:
+            print("[*] SPACEDB version is abnormal.")
+            return False
+
+        return True
 
     def __parse_sdbc(self, data):
-        print(data)
-        pass
+        """
+
+        :param data: SDBC raw data(512 bytes)
+        :return: True / False
+        """
+
+        """ Signature Check """
+        if data[0:8] != b'SDBC    ':
+            print("[*] SDBC Signature is not matching.")
+            return False
+
+        """ Storage Pool UUID Check"""
+        if data[0x10:0x20] != self.storage_pool_uuid:
+            print("[*] Storage Pool UUID is not matching with SPACEDB's Storage Pool UUID")
+            return False
+
+        self.sdbb_entry_size = struct.unpack('<I', data[0x24:0x28])[0]
+        self.next_sdbb_entry_number = struct.unpack('<I', data[0x28:0x2C])[0]
+        self.sdbb_entry_modified_time = struct.unpack('<Q', data[0x48:0x50])[0]
+
+        return True
+
+
+
 
     def __parse_sdbb(self, data):
-        print(data)
-        pass
+        """
+
+        :param data: SDBB raw data(0x10000 bytes) temporary size
+        :return: True / False
+        """
+
+        temp_list = []
+
+        for i in range(0x00, self.next_sdbb_entry_number - 8):
+            temp_offset = i * 0x40
+            if data[temp_offset + 0x0C : temp_offset + 0x0E] == b'\x00\x00':
+                temp_list.insert(b'')
+
+            temp_list[i] += data[temp_offset + 0x10 : temp_offset + 0x40]
+
+        print("test")
+
+
+        return True
 
 

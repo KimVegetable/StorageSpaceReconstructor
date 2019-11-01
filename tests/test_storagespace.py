@@ -1,6 +1,7 @@
 from SSR.storagespace import StorageSpace
 from SSR.reconstructor import Reconstructor
 
+
 def test_ss():
 
     disk1 = StorageSpace()
