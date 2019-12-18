@@ -8,8 +8,8 @@
 import os
 import struct
 
-from SSR import define
-from .define import Define
+from SSR.define import Define
+
 
 class StorageSpace:
 
@@ -43,8 +43,9 @@ class StorageSpace:
 
 
     def __del__(self):
-        if (self.dp is not None) and (not self.dp.closed):
-            self.dp.close()
+        #if (self.dp is not None) and (not self.dp.closed):
+        #    self.dp.close()
+        pass
 
     def __repr__(self):
         return "Storage Space"
@@ -130,11 +131,11 @@ class StorageSpace:
             return False
 
         """ Version Check """
-        if self.version == define.WINDOWS_8 or self.version == define.WINDOWS_SERVER_2012:  # Windows 8.1, Windows Server 2012
+        if self.version == Define.WINDOWS_8 or self.version == Define.WINDOWS_SERVER_2012:  # Windows 8.1, Windows Server 2012
             self.storage_pool_uuid = data[0x10:0x20]
             self.physical_disk_uuid = data[0x20:0x30]
             self.physical_disk_format_time = struct.unpack('>Q', data[0x58:0x60])[0]
-        elif self.version == define.WINDOWS_10 or self.version == define.WINDOWS_SERVER_2016:  # Windows 10, Windows Server 2016
+        elif self.version == Define.WINDOWS_10 or self.version == Define.WINDOWS_SERVER_2016:  # Windows 10, Windows Server 2016
             self.physical_disk_format_time = struct.unpack('>Q', data[0x18:0x20])[0]
             self.storage_pool_uuid = data[0x20:0x30]
             self.physical_disk_uuid = data[0x30:0x40]
