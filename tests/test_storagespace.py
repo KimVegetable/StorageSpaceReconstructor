@@ -32,7 +32,6 @@ def test_windows8_simple():
     else:
         return False
 
-
     reconstructor = Reconstructor(Define.WINDOWS_8, Define.RAID_LEVEL_SIMPLE)
     reconstructor.add_disk(disk1)
     reconstructor.add_disk(disk2)
@@ -71,7 +70,6 @@ def test_windows8_2mirror():
             return False
     else:
         return False
-
 
     reconstructor = Reconstructor(Define.WINDOWS_8, Define.RAID_LEVEL_2MIRROR)
     reconstructor.add_disk(disk1)
@@ -129,8 +127,6 @@ def test_windows8_3mirror():
             return False
     else:
         return False
-
-
 
     reconstructor = Reconstructor(Define.WINDOWS_8, Define.RAID_LEVEL_3MIRROR)
     reconstructor.add_disk(disk1)
@@ -222,7 +218,6 @@ def test_windows10_simple():
     else:
         return False
 
-
     reconstructor = Reconstructor(Define.WINDOWS_10, Define.RAID_LEVEL_SIMPLE)
     reconstructor.add_disk(disk1)
     reconstructor.add_disk(disk2)
@@ -262,8 +257,6 @@ def test_windows10_2mirror():
             return False
     else:
         return False
-
-
 
     reconstructor = Reconstructor(Define.WINDOWS_10, Define.RAID_LEVEL_2MIRROR)
     reconstructor.add_disk(disk1)
@@ -322,7 +315,6 @@ def test_windows10_3mirror():
     else:
         return False
 
-
     reconstructor = Reconstructor(Define.WINDOWS_10, Define.RAID_LEVEL_3MIRROR)
     reconstructor.add_disk(disk1)
     reconstructor.add_disk(disk2)
@@ -373,8 +365,6 @@ def test_windows10_parity():
     else:
         return False
 
-
-
     reconstructor = Reconstructor(Define.WINDOWS_10, Define.RAID_LEVEL_PARITY)
     reconstructor.add_disk(disk1)
     reconstructor.add_disk(disk2)
@@ -415,7 +405,6 @@ def test_windows_server_2012_simple():
     else:
         return False
 
-
     reconstructor = Reconstructor(Define.WINDOWS_SERVER_2012, Define.RAID_LEVEL_SIMPLE)
     reconstructor.add_disk(disk1)
     reconstructor.add_disk(disk2)
@@ -454,7 +443,6 @@ def test_windows_server_2012_2mirror():
             return False
     else:
         return False
-
 
     reconstructor = Reconstructor(Define.WINDOWS_SERVER_2012, Define.RAID_LEVEL_2MIRROR)
     reconstructor.add_disk(disk1)
@@ -513,10 +501,6 @@ def test_windows_server_2012_3mirror():
     else:
         return False
 
-
-
-
-
     reconstructor = Reconstructor(Define.WINDOWS_SERVER_2012, Define.RAID_LEVEL_3MIRROR)
     reconstructor.add_disk(disk1)
     reconstructor.add_disk(disk2)
@@ -567,8 +551,6 @@ def test_windows_server_2012_parity():
     else:
         return False
 
-
-
     reconstructor = Reconstructor(Define.WINDOWS_SERVER_2012, Define.RAID_LEVEL_PARITY)
     reconstructor.add_disk(disk1)
     reconstructor.add_disk(disk2)
@@ -609,7 +591,6 @@ def test_windows_server_2016_simple():
     else:
         return False
 
-
     reconstructor = Reconstructor(Define.WINDOWS_SERVER_2016, Define.RAID_LEVEL_SIMPLE)
     reconstructor.add_disk(disk1)
     reconstructor.add_disk(disk2)
@@ -648,7 +629,6 @@ def test_windows_server_2016_2mirror():
             return False
     else:
         return False
-
 
     reconstructor = Reconstructor(Define.WINDOWS_SERVER_2016, Define.RAID_LEVEL_2MIRROR)
     reconstructor.add_disk(disk1)
@@ -706,10 +686,6 @@ def test_windows_server_2016_3mirror():
             return False
     else:
         return False
-
-
-
-
 
     reconstructor = Reconstructor(Define.WINDOWS_SERVER_2016, Define.RAID_LEVEL_3MIRROR)
     reconstructor.add_disk(disk1)
@@ -779,12 +755,10 @@ if __name__ == "__main__":
     #test_windows8_3mirror()
     #test_windows8_parity()
 
-
     #test_windows_server_2012_simple()
     #test_windows_server_2012_2mirror()
     #test_windows_server_2012_3mirror()
     #test_windows_server_2012_parity()
-
 
     #test_windows10_simple()
     #test_windows10_2mirror()

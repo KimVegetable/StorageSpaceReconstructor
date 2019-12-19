@@ -2,7 +2,6 @@
 @author:    Junho Kim
 @license:   None
 @contact:   rlawnsgh92(at)korea(dot)ac(dot)kr
-@insta:     @dailyjunoat_
 """
 import os
 import struct
@@ -20,7 +19,6 @@ class Reconstructor:
 
         """ physical disks, virtual disks, """
         self.parsed_disks = []
-
 
     def __del__(self):
         pass
@@ -55,8 +53,6 @@ class Reconstructor:
         return True
 
     def _parse_entry_type1(self):
-        """ SPACEDB의 Pool UUID와 type 1의 UUID를 비교하기. """
-        # 8.1, 10 동일
         for disk in self.disk_list:
             temp_offset = 0
 
@@ -96,13 +92,6 @@ class Reconstructor:
             for j in range(0, physical_disk_name_length * 2, 2):
                 physical_disk_name += temp_physical_disk_name[j + 1 : j + 2]
                 physical_disk_name += temp_physical_disk_name[j : j + 1]
-            """
-            temp_offset += temp_disk.sdbb_entry_type2[i][temp_offset] + 1
-            temp_offset += temp_disk.sdbb_entry_type2[i][temp_offset] + 1
-            temp_offset += temp_disk.sdbb_entry_type2[i][temp_offset] + 1
-            temp_offset += temp_disk.sdbb_entry_type2[i][temp_offset] + 1
-            temp_offset += temp_disk.sdbb_entry_type2[i][temp_offset] + 1
-            """
             temp_offset += 6
 
             data_record_len = temp_disk.sdbb_entry_type2[i][temp_offset]
@@ -368,6 +357,7 @@ class Reconstructor:
                             if is_exist_disk_block == False:
                                 buf = b'\x00' * 0x40000000
                                 disk.dp.write(buf)
+
                     elif self.level == Define.RAID_LEVEL_SIMPLE:
                         for i in range(0, disk.block_number, 12):
                                 is_exist_disk_block = False
@@ -535,69 +525,5 @@ class Reconstructor:
                                     disk.dp.write(self.parsed_disks[temp_entry_type4_1['physical_disk_id']].dp.dp.read(0x40000))
                                     disk.dp.write(self.parsed_disks[temp_entry_type4_2['physical_disk_id']].dp.dp.read(0x40000))
                                     self.parsed_disks[temp_entry_type4_0['physical_disk_id']].dp.dp.seek(0x40000, os.SEEK_CUR)
-
-
-                        """
-                        for i in range(0, disk.block_number, 2):
-                            is_exist_disk_block = False
-
-                            temp_entry_type4_0 = None  # Sequence 0
-                            temp_entry_type4_1 = None  # Sequence 1
-                            temp_entry_type4_2 = None  # Sequence 2
-
-                            # Search Sequence Number #
-                            for j in range(0, len(disk.sdbb_entry_type4)):
-                                if disk.sdbb_entry_type4[j]['virtual_disk_block_number'] == i:
-                                    if disk.sdbb_entry_type4[j]['parity_sequence_number'] == 0:
-                                        temp_entry_type4_0 = disk.sdbb_entry_type4[j]
-                                        is_exist_disk_block = True
-                                    elif disk.sdbb_entry_type4[j]['parity_sequence_number'] == 1:
-                                        temp_entry_type4_1 = disk.sdbb_entry_type4[j]
-                                        is_exist_disk_block = True
-                                    elif disk.sdbb_entry_type4[j]['parity_sequence_number'] == 2:
-                                        temp_entry_type4_2 = disk.sdbb_entry_type4[j]
-                                        is_exist_disk_block = True
-
-                            if is_exist_disk_block == False:
-                                buf = b'\x00' * 0x20000000
-                                disk.dp.write(buf)
-                                continue
-
-                            partition_start_offset_0 = self.parsed_disks[temp_entry_type4_0['physical_disk_id']].dp.partition_start_offset
-                            partition_start_offset_1 = self.parsed_disks[temp_entry_type4_0['physical_disk_id']].dp.partition_start_offset
-                            partition_start_offset_2 = self.parsed_disks[temp_entry_type4_0['physical_disk_id']].dp.partition_start_offset
-                            self.parsed_disks[temp_entry_type4_0['physical_disk_id']].dp.dp.seek((temp_entry_type4_0[
-                                                                                                      'physical_disk_block_number'] + 2) * 0x10000000 + partition_start_offset_0)  # SPACEDB 시작 offset을 더해줘야함
-                            self.parsed_disks[temp_entry_type4_1['physical_disk_id']].dp.dp.seek((temp_entry_type4_1[
-                                                                                                      'physical_disk_block_number'] + 2) * 0x10000000 + partition_start_offset_1)  # SPACEDB 시작 offset을 더해줘야함
-                            self.parsed_disks[temp_entry_type4_2['physical_disk_id']].dp.dp.seek((temp_entry_type4_2[
-                                                                                                      'physical_disk_block_number'] + 2) * 0x10000000 + partition_start_offset_2)  # SPACEDB 시작 offset을 더해줘야함
-
-                            for j in range(0, 0x400):
-                                if j % 3 == 0:
-                                    #self.parsed_disks[temp_entry_type4_0['physical_disk_id']].dp.dp.seek((temp_entry_type4_0['physical_disk_block_number'] + 3) * 0x10000000 + partition_start_offset_0 + j * 0x40000)  # SPACEDB 시작 offset을 더해줘야함
-                                    #self.parsed_disks[temp_entry_type4_1['physical_disk_id']].dp.dp.seek((temp_entry_type4_1['physical_disk_block_number'] + 3) * 0x10000000 + partition_start_offset_0 + j * 0x40000)  # SPACEDB 시작 offset을 더해줘야함
-                                    disk.dp.write(self.parsed_disks[temp_entry_type4_0['physical_disk_id']].dp.dp.read(0x40000))
-                                    disk.dp.write(self.parsed_disks[temp_entry_type4_1['physical_disk_id']].dp.dp.read(0x40000))
-                                    self.parsed_disks[temp_entry_type4_2['physical_disk_id']].dp.dp.seek(0x40000, os.SEEK_CUR)
-                                if j % 3 == 1:
-                                    #self.parsed_disks[temp_entry_type4_2['physical_disk_id']].dp.dp.seek((temp_entry_type4_2['physical_disk_block_number'] + 3) * 0x10000000 + partition_start_offset_2 + j * 0x40000)  # SPACEDB 시작 offset을 더해줘야함
-                                    #self.parsed_disks[temp_entry_type4_0['physical_disk_id']].dp.dp.seek((temp_entry_type4_0['physical_disk_block_number'] + 3) * 0x10000000 + partition_start_offset_0 + j * 0x40000)  # SPACEDB 시작 offset을 더해줘야함
-                                    disk.dp.write(self.parsed_disks[temp_entry_type4_2['physical_disk_id']].dp.dp.read(0x40000))
-                                    disk.dp.write(self.parsed_disks[temp_entry_type4_0['physical_disk_id']].dp.dp.read(0x40000))
-                                    self.parsed_disks[temp_entry_type4_1['physical_disk_id']].dp.dp.seek(0x40000, os.SEEK_CUR)
-                                if j % 3 == 2:
-                                    #self.parsed_disks[temp_entry_type4_1['physical_disk_id']].dp.dp.seek((temp_entry_type4_1['physical_disk_block_number'] + 3) * 0x10000000 + partition_start_offset_1 + j * 0x40000)  # SPACEDB 시작 offset을 더해줘야함
-                                    #self.parsed_disks[temp_entry_type4_2['physical_disk_id']].dp.dp.seek((temp_entry_type4_2['physical_disk_block_number'] + 3) * 0x10000000 + partition_start_offset_2 + j * 0x40000)  # SPACEDB 시작 offset을 더해줘야함
-                                    disk.dp.write(self.parsed_disks[temp_entry_type4_1['physical_disk_id']].dp.dp.read(0x40000))
-                                    disk.dp.write(self.parsed_disks[temp_entry_type4_2['physical_disk_id']].dp.dp.read(0x40000))
-                                    self.parsed_disks[temp_entry_type4_0['physical_disk_id']].dp.dp.seek(0x40000, os.SEEK_CUR)
-                                    
-                        """
-
-
-
-
-
 
                 disk.dp.close()

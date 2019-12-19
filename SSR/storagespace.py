@@ -2,7 +2,6 @@
 @author:    Junho Kim
 @license:   None
 @contact:   rlawnsgh92(at)korea(dot)ac(dot)kr
-@insta:     @dailyjunoat_
 """
 
 import os
