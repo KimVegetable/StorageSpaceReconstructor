@@ -105,14 +105,16 @@ class StorageSpace:
             print("[*] SDBC Parsing Success.")
         else:
             print("[*] SDBC Parsing Fail.")
-            return False
+            #return False
+            return True  # 임시
 
         sdbb = self.dp.read(0x10000)
         if self.__parse_sdbb(sdbb):
             print("[*] SDBB Parsing Success.")
         else:
             print("[*] SDBB Parsing Fail.")
-            return False
+            #return False
+            return True  # 임시
 
         print("[*] Disk Parsing Success.")
         return True
@@ -134,7 +136,7 @@ class StorageSpace:
             self.storage_pool_uuid = data[0x10:0x20]
             self.physical_disk_uuid = data[0x20:0x30]
             self.physical_disk_format_time = struct.unpack('>Q', data[0x58:0x60])[0]
-        elif self.version == Define.WINDOWS_10 or self.version == Define.WINDOWS_SERVER_2016:  # Windows 10, Windows Server 2016
+        elif self.version == Define.WINDOWS_10 or self.version == Define.WINDOWS_SERVER_2016 or self.version == Define.WINDOWS_SERVER_2019:  # Windows 10, Windows Server 2016, 2019
             self.physical_disk_format_time = struct.unpack('>Q', data[0x18:0x20])[0]
             self.storage_pool_uuid = data[0x20:0x30]
             self.physical_disk_uuid = data[0x30:0x40]
