@@ -129,9 +129,8 @@ class Reconstructor:
             virtual_disk_id = big_endian_to_int(temp_disk.sdbb_entry_type3[i][temp_offset + 1: temp_offset + 1 + data_record_len])
             temp_offset += 0x02
 
-            temp_offset += temp_disk.sdbb_entry_type3[i][temp_offset] + 1
-
-            if self.version == Define.WINDOWS_8:
+            #if self.version == Define.WINDOWS_8 or self.version == Define.WINDOWS_SERVER_2019 or self.version == Define.WINDOWS_SERVER_2016 or self.version == Define.WINDOWS_SERVER_2012:
+            if temp_disk.sdbb_entry_type3[i][temp_offset] == 0x01:
                 temp_offset += temp_disk.sdbb_entry_type3[i][temp_offset] + 1
 
             virtual_disk_uuid = temp_disk.sdbb_entry_type3[i][temp_offset: temp_offset + 0x10]
