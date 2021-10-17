@@ -227,6 +227,45 @@ def test_windows10_simple():
 
     reconstructor.restore_virtual_disk()
 
+def test_windows10_2mirror2():
+
+    disk1 = StorageSpace(Define.WINDOWS_10, Define.RAID_LEVEL_2MIRROR)
+    disk2 = StorageSpace(Define.WINDOWS_10, Define.RAID_LEVEL_2MIRROR)
+    disk3 = StorageSpace(Define.WINDOWS_10, Define.RAID_LEVEL_2MIRROR)
+
+    if disk1.open_disk("D:\\temp\\5GB_1.001"):
+        if disk1.parse_disk():
+            pass
+        else:
+            return False
+    else:
+        return False
+
+    if disk2.open_disk("D:\\temp\\5GB_2.001"):
+        if disk2.parse_disk():
+            pass
+        else:
+            return False
+    else:
+        return False
+
+    if disk3.open_disk("D:\\temp\\5GB_3.001"):
+        if disk3.parse_disk():
+            pass
+        else:
+            return False
+    else:
+        return False
+
+    reconstructor = Reconstructor(Define.WINDOWS_10, Define.RAID_LEVEL_2MIRROR)
+    reconstructor.add_disk(disk1)
+    reconstructor.add_disk(disk2)
+    reconstructor.add_disk(disk3)
+
+    reconstructor.parse_metadata()
+
+    reconstructor.restore_virtual_disk()
+
 def test_windows10_2mirror():
 
     disk1 = StorageSpace(Define.WINDOWS_10, Define.RAID_LEVEL_2MIRROR)
@@ -333,7 +372,39 @@ def test_windows10_parity():
     disk3 = StorageSpace(Define.WINDOWS_10, Define.RAID_LEVEL_PARITY)
     disk4 = StorageSpace(Define.WINDOWS_10, Define.RAID_LEVEL_PARITY)
 
-    if disk1.open_disk("D:\\Windows 10\\04. Parity\\Windows_10_Physical_5GB.001"):
+    # if disk1.open_disk("D:\\Windows 10\\04. Parity\\Windows_10_Physical_5GB.001"):
+    #     if disk1.parse_disk():
+    #         pass
+    #     else:
+    #         return False
+    # else:
+    #     return False
+    #
+    # if disk2.open_disk("D:\\Windows 10\\04. Parity\\Windows_10_Physical_10GB.001"):
+    #     if disk2.parse_disk():
+    #         pass
+    #     else:
+    #         return False
+    # else:
+    #     return False
+    #
+    # if disk3.open_disk("D:\\Windows 10\\04. Parity\\Windows_10_Physical_15GB.001"):
+    #     if disk3.parse_disk():
+    #         pass
+    #     else:
+    #         return False
+    # else:
+    #     return False
+    #
+    # if disk4.open_disk("D:\\Windows 10\\04. Parity\\Windows_10_Physical_20GB.001"):
+    #     if disk4.parse_disk():
+    #         pass
+    #     else:
+    #         return False
+    # else:
+    #     return False
+
+    if disk1.open_disk("D:\\temp\\저장소공간\\10GB.001"):
         if disk1.parse_disk():
             pass
         else:
@@ -341,7 +412,7 @@ def test_windows10_parity():
     else:
         return False
 
-    if disk2.open_disk("D:\\Windows 10\\04. Parity\\Windows_10_Physical_10GB.001"):
+    if disk2.open_disk("D:\\temp\\저장소공간\\20GB.001"):
         if disk2.parse_disk():
             pass
         else:
@@ -349,7 +420,7 @@ def test_windows10_parity():
     else:
         return False
 
-    if disk3.open_disk("D:\\Windows 10\\04. Parity\\Windows_10_Physical_15GB.001"):
+    if disk3.open_disk("D:\\temp\\저장소공간\\30GB.001"):
         if disk3.parse_disk():
             pass
         else:
@@ -357,13 +428,96 @@ def test_windows10_parity():
     else:
         return False
 
-    if disk4.open_disk("D:\\Windows 10\\04. Parity\\Windows_10_Physical_20GB.001"):
+    if disk4.open_disk("D:\\temp\\저장소공간\\40GB.001"):
         if disk4.parse_disk():
             pass
         else:
             return False
     else:
         return False
+
+
+    reconstructor = Reconstructor(Define.WINDOWS_10, Define.RAID_LEVEL_PARITY)
+    reconstructor.add_disk(disk1)
+    reconstructor.add_disk(disk2)
+    reconstructor.add_disk(disk3)
+    reconstructor.add_disk(disk4)
+
+    reconstructor.parse_metadata()
+
+    reconstructor.restore_virtual_disk()
+
+def test_windows10_parity2():
+
+    disk1 = StorageSpace(Define.WINDOWS_10, Define.RAID_LEVEL_PARITY)
+    disk2 = StorageSpace(Define.WINDOWS_10, Define.RAID_LEVEL_PARITY)
+    disk3 = StorageSpace(Define.WINDOWS_10, Define.RAID_LEVEL_PARITY)
+    disk4 = StorageSpace(Define.WINDOWS_10, Define.RAID_LEVEL_PARITY)
+
+    # if disk1.open_disk("D:\\Windows 10\\04. Parity\\Windows_10_Physical_5GB.001"):
+    #     if disk1.parse_disk():
+    #         pass
+    #     else:
+    #         return False
+    # else:
+    #     return False
+    #
+    # if disk2.open_disk("D:\\Windows 10\\04. Parity\\Windows_10_Physical_10GB.001"):
+    #     if disk2.parse_disk():
+    #         pass
+    #     else:
+    #         return False
+    # else:
+    #     return False
+    #
+    # if disk3.open_disk("D:\\Windows 10\\04. Parity\\Windows_10_Physical_15GB.001"):
+    #     if disk3.parse_disk():
+    #         pass
+    #     else:
+    #         return False
+    # else:
+    #     return False
+    #
+    # if disk4.open_disk("D:\\Windows 10\\04. Parity\\Windows_10_Physical_20GB.001"):
+    #     if disk4.parse_disk():
+    #         pass
+    #     else:
+    #         return False
+    # else:
+    #     return False
+
+    if disk1.open_disk("F:\\10GB.vhd"):
+        if disk1.parse_disk():
+            pass
+        else:
+            return False
+    else:
+        return False
+
+    if disk2.open_disk("F:\\20GB.vhd"):
+        if disk2.parse_disk():
+            pass
+        else:
+            return False
+    else:
+        return False
+
+    if disk3.open_disk("F:\\30GB.vhd"):
+        if disk3.parse_disk():
+            pass
+        else:
+            return False
+    else:
+        return False
+
+    if disk4.open_disk("F:\\40GB.vhd"):
+        if disk4.parse_disk():
+            pass
+        else:
+            return False
+    else:
+        return False
+
 
     reconstructor = Reconstructor(Define.WINDOWS_10, Define.RAID_LEVEL_PARITY)
     reconstructor.add_disk(disk1)
@@ -700,61 +854,12 @@ def test_windows_server_2016_3mirror():
 
 def test_windows_server_2016_parity():
 
-    # disk1 = StorageSpace(Define.WINDOWS_SERVER_2016, Define.RAID_LEVEL_PARITY)
-    # disk2 = StorageSpace(Define.WINDOWS_SERVER_2016, Define.RAID_LEVEL_PARITY)
-    # disk3 = StorageSpace(Define.WINDOWS_SERVER_2016, Define.RAID_LEVEL_PARITY)
-    # disk4 = StorageSpace(Define.WINDOWS_SERVER_2016, Define.RAID_LEVEL_PARITY)
-    #
-    # if disk1.open_disk("D:\\Windows Server 2016\\04. Parity\\Windows_Server_2016_Physical_5GB.001"):
-    #     if disk1.parse_disk():
-    #         pass
-    #     else:
-    #         return False
-    # else:
-    #     return False
-    #
-    # if disk2.open_disk("D:\\Windows Server 2016\\04. Parity\\Windows_Server_2016_Physical_10GB.001"):
-    #     if disk2.parse_disk():
-    #         pass
-    #     else:
-    #         return False
-    # else:
-    #     return False
-    #
-    # if disk3.open_disk("D:\\Windows Server 2016\\04. Parity\\Windows_Server_2016_Physical_15GB.001"):
-    #     if disk3.parse_disk():
-    #         pass
-    #     else:
-    #         return False
-    # else:
-    #     return False
-    #
-    # if disk4.open_disk("D:\\Windows Server 2016\\04. Parity\\Windows_Server_2016_Physical_20GB.001"):
-    #     if disk4.parse_disk():
-    #         pass
-    #     else:
-    #         return False
-    # else:
-    #     return False
-    #
-    #
-    #
-    # reconstructor = Reconstructor(Define.WINDOWS_SERVER_2016, Define.RAID_LEVEL_PARITY)
-    # reconstructor.add_disk(disk1)
-    # reconstructor.add_disk(disk2)
-    # reconstructor.add_disk(disk3)
-    # reconstructor.add_disk(disk4)
-    #
-    # reconstructor.parse_metadata()
-    #
-    # reconstructor.restore_virtual_disk()
-
     disk1 = StorageSpace(Define.WINDOWS_SERVER_2016, Define.RAID_LEVEL_PARITY)
     disk2 = StorageSpace(Define.WINDOWS_SERVER_2016, Define.RAID_LEVEL_PARITY)
     disk3 = StorageSpace(Define.WINDOWS_SERVER_2016, Define.RAID_LEVEL_PARITY)
     disk4 = StorageSpace(Define.WINDOWS_SERVER_2016, Define.RAID_LEVEL_PARITY)
 
-    if disk1.open_disk("D:\\challenge\\5GB.001"):
+    if disk1.open_disk("D:\\Windows Server 2016\\04. Parity\\Windows_Server_2016_Physical_5GB.001"):
         if disk1.parse_disk():
             pass
         else:
@@ -762,7 +867,7 @@ def test_windows_server_2016_parity():
     else:
         return False
 
-    if disk2.open_disk("D:\\challenge\\6GB.001"):
+    if disk2.open_disk("D:\\Windows Server 2016\\04. Parity\\Windows_Server_2016_Physical_10GB.001"):
         if disk2.parse_disk():
             pass
         else:
@@ -770,7 +875,7 @@ def test_windows_server_2016_parity():
     else:
         return False
 
-    if disk3.open_disk("D:\\challenge\\6GB_2.001"):
+    if disk3.open_disk("D:\\Windows Server 2016\\04. Parity\\Windows_Server_2016_Physical_15GB.001"):
         if disk3.parse_disk():
             pass
         else:
@@ -778,13 +883,15 @@ def test_windows_server_2016_parity():
     else:
         return False
 
-    if disk4.open_disk("D:\\challenge\\6GB_3.001"):
+    if disk4.open_disk("D:\\Windows Server 2016\\04. Parity\\Windows_Server_2016_Physical_20GB.001"):
         if disk4.parse_disk():
             pass
         else:
             return False
     else:
         return False
+
+
 
     reconstructor = Reconstructor(Define.WINDOWS_SERVER_2016, Define.RAID_LEVEL_PARITY)
     reconstructor.add_disk(disk1)
@@ -795,6 +902,7 @@ def test_windows_server_2016_parity():
     reconstructor.parse_metadata()
 
     reconstructor.restore_virtual_disk()
+
 
 def test_windows_server_2016_2parity():
 
@@ -1319,6 +1427,45 @@ def test_windows_server_2019_simple2():
 
     reconstructor.restore_virtual_disk()
 
+def test_windows_server_2019_simple3():
+
+    disk1 = StorageSpace(Define.WINDOWS_SERVER_2019, Define.RAID_LEVEL_SIMPLE)
+    disk2 = StorageSpace(Define.WINDOWS_SERVER_2019, Define.RAID_LEVEL_SIMPLE)
+    disk3 = StorageSpace(Define.WINDOWS_SERVER_2019, Define.RAID_LEVEL_SIMPLE)
+
+    if disk1.open_disk("E:\\06. WorkSpace\\Pycharm\\SSR\\result\\server2019_논문테스트\\5GB_1.001"):
+        if disk1.parse_disk():
+            pass
+        else:
+            return False
+    else:
+        return False
+
+    if disk2.open_disk("E:\\06. WorkSpace\\Pycharm\\SSR\\result\\server2019_논문테스트\\5GB_2.001"):
+        if disk2.parse_disk():
+            pass
+        else:
+            return False
+    else:
+        return False
+
+    if disk3.open_disk("E:\\06. WorkSpace\\Pycharm\\SSR\\result\\server2019_논문테스트\\5GB_3.001"):
+        if disk3.parse_disk():
+            pass
+        else:
+            return False
+    else:
+        return False
+
+    reconstructor = Reconstructor(Define.WINDOWS_SERVER_2019, Define.RAID_LEVEL_SIMPLE)
+    reconstructor.add_disk(disk1)
+    reconstructor.add_disk(disk2)
+    reconstructor.add_disk(disk3)
+
+    reconstructor.parse_metadata()
+
+    reconstructor.restore_virtual_disk()
+
 
 def test_windows_server_2019_parity2():
 
@@ -1541,9 +1688,11 @@ if __name__ == "__main__":
     #test_windows_server_2012_parity()
 
     #test_windows10_simple()
+    #test_windows10_2mirror2()
     #test_windows10_2mirror()
     #test_windows10_3mirror()
     #test_windows10_parity()
+    test_windows10_parity2()
 
     #test_windows_server_2016_simple()
     #test_windows_server_2016_2mirror()
@@ -1559,6 +1708,7 @@ if __name__ == "__main__":
 
     #test_windows_server_2019_challenge()
     #test_windows_server_2019_simple2()
+    #test_windows_server_2019_simple3()
     #test_windows_server_2019_parity2()
-    test_windows_server_2019_2parity2()
+    #test_windows_server_2019_2parity2()
 

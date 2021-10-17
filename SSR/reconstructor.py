@@ -168,13 +168,13 @@ class Reconstructor:
             #    temp_offset += 3
             temp_offset += 3
 
-
-            data_record_len = temp_disk.sdbb_entry_type3[i][temp_offset]
-            if self.version == Define.WINDOWS_SERVER_2019:
+            if self.version == Define.WINDOWS_SERVER_2019 or self.version == Define.WINDOWS_10:
+                data_record_len = temp_disk.sdbb_entry_type3[i][temp_offset]
                 data_record_len -= 3
                 virtual_disk_block_number = int(big_endian_to_int(
                     temp_disk.sdbb_entry_type3[i][temp_offset + 1: temp_offset + 1 + data_record_len]) / 0x10)
-            else:
+            if virtual_disk_block_number == 0:
+                data_record_len = temp_disk.sdbb_entry_type3[i][temp_offset]
                 virtual_disk_block_number = big_endian_to_int(temp_disk.sdbb_entry_type3[i][temp_offset + 1: temp_offset + 1 + data_record_len])
 
 
