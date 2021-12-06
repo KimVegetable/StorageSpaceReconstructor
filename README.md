@@ -10,4 +10,4 @@ We developed a tool called Storage Space Reconstructor (SSR). This tool was deve
 You can download the testset from the above URL. And if you move the testset to the tests folder and run test_storagespace.py, you can use this tool.
 
 ##### Other information
-* Documentation: 
+* Usage: https://github.com/KimVegetable/StorageSpaceReconstructor/wiki/Usage
