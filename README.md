@@ -1,6 +1,6 @@
-# SSR
-Storage Space Reconstructor
+# SSR(Storage Space Reconstructor)
 
+## Introduction
 Testset : https://drive.google.com/drive/folders/1R2Tew9ptw0OxLUR1DhJzn_3GMGY_-ZN-?usp=sharing
 
 You can download the testset from the above URL.
