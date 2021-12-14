@@ -306,6 +306,8 @@ class Reconstructor:
                     print("[Error] check output_path (" + output_path + ")")
                     return False
 
+                print("[*] Start Reconstruction.")
+
                 disk.dp = open(output_path + "\\" + disk.name[:-2].decode('utf-16') + ".dd", 'wb')
 
                 if self.version == Define.WINDOWS_8:
