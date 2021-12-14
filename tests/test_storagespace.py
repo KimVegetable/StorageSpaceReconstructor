@@ -1466,7 +1466,6 @@ def test_windows_server_2019_simple3():
 
     reconstructor.restore_virtual_disk()
 
-
 def test_windows_server_2019_parity2():
 
     disk1 = StorageSpace(Define.WINDOWS_SERVER_2019, Define.RAID_LEVEL_PARITY)
@@ -1676,6 +1675,55 @@ def test_windows_server_2019_2parity2():
 
     reconstructor.restore_virtual_disk()
 
+def test_for_JOFS():
+
+    disk1 = StorageSpace(Define.WINDOWS_10, Define.RAID_LEVEL_PARITY)
+    disk2 = StorageSpace(Define.WINDOWS_10, Define.RAID_LEVEL_PARITY)
+    disk3 = StorageSpace(Define.WINDOWS_10, Define.RAID_LEVEL_PARITY)
+    disk4 = StorageSpace(Define.WINDOWS_10, Define.RAID_LEVEL_PARITY)
+
+    if disk1.open_disk("10GB.001"):
+        if disk1.parse_disk():
+            pass
+        else:
+            return False
+    else:
+        return False
+
+    if disk2.open_disk("20GB.001"):
+        if disk2.parse_disk():
+            pass
+        else:
+            return False
+    else:
+        return False
+
+    if disk3.open_disk("30GB.001"):
+        if disk3.parse_disk():
+            pass
+        else:
+            return False
+    else:
+        return False
+
+    if disk4.open_disk("40GB.001"):
+        if disk4.parse_disk():
+            pass
+        else:
+            return False
+    else:
+        return False
+
+    reconstructor = Reconstructor(Define.WINDOWS_10, Define.RAID_LEVEL_PARITY)
+    reconstructor.add_disk(disk1)
+    reconstructor.add_disk(disk2)
+    reconstructor.add_disk(disk3)
+    reconstructor.add_disk(disk4)
+
+    reconstructor.parse_metadata()
+
+    reconstructor.restore_virtual_disk()
+
 if __name__ == "__main__":
     #test_windows8_simple()
     #test_windows8_2mirror()
@@ -1692,7 +1740,7 @@ if __name__ == "__main__":
     #test_windows10_2mirror()
     #test_windows10_3mirror()
     #test_windows10_parity()
-    test_windows10_parity2()
+    #test_windows10_parity2()
 
     #test_windows_server_2016_simple()
     #test_windows_server_2016_2mirror()
@@ -1711,4 +1759,6 @@ if __name__ == "__main__":
     #test_windows_server_2019_simple3()
     #test_windows_server_2019_parity2()
     #test_windows_server_2019_2parity2()
+
+    test_for_JOFS()
 

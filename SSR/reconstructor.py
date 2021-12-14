@@ -288,7 +288,7 @@ class Reconstructor:
                     sdbb_entry_type4_data)
 
     """ restore disks """
-    def restore_virtual_disk(self):
+    def restore_virtual_disk(self, output_path=None):
 
         for disk in self.parsed_disks:
             if disk == None:  # None skip
@@ -302,7 +302,12 @@ class Reconstructor:
                 if disk.name == b'':  # Metadata Area(SPACEDB, SDBC, SDBB) skip
                     continue
 
-                disk.dp = open("..\\result\\" + disk.name[:-2].decode('utf-16') + ".dd", 'wb')
+                if output_path == None or os.path.exists(output_path) == False:
+                    print("[Error] check output_path (" + output_path + ")")
+                    return False
+
+                disk.dp = open(output_path + "\\" + disk.name[:-2].decode('utf-16') + ".dd", 'wb')
+
                 if self.version == Define.WINDOWS_8:
                     """ Simple, Mirror """
                     if self.level == Define.RAID_LEVEL_SIMPLE or self.level == Define.RAID_LEVEL_2MIRROR or \
@@ -638,7 +643,6 @@ class Reconstructor:
                                     self.parsed_disks[temp_entry_type4_0['physical_disk_id']].dp.dp.seek(0x40000, os.SEEK_CUR)
                                     self.parsed_disks[temp_entry_type4_1['physical_disk_id']].dp.dp.seek(0x40000, os.SEEK_CUR)
 
-
                 elif self.version == Define.WINDOWS_SERVER_2019:
                     """ Mirror """
                     if self.level == Define.RAID_LEVEL_2MIRROR or self.level == Define.RAID_LEVEL_3MIRROR:
@@ -837,3 +841,5 @@ class Reconstructor:
                                     self.parsed_disks[temp_entry_type4_0['physical_disk_id']].dp.dp.seek(0x40000, os.SEEK_CUR)
                                     self.parsed_disks[temp_entry_type4_1['physical_disk_id']].dp.dp.seek(0x40000, os.SEEK_CUR)
                 disk.dp.close()
+
+        print("[*] Reconstruction Success.")
