@@ -19,14 +19,16 @@ class StorageSpaceReconstructorTool():
         'Storage Space Reconstructor(SSR)',
         '',
         'More information can be gathered from here:',
-        '    https://github.com/KimVegetable/StorageSpaceReconstructor'
+        '    https://github.com/KimVegetable/StorageSpaceReconstructor',
+        '    RAID level list: simple, 2mirror, 3mirror, parity, 2parity',
+        '    Windows version list: win8, win8.1, win10, winserver2012, winserver2016, winserver2019'
         '']))
     EPILOG = textwrap.dedent('\n'.join([
         '',
         'Example usage:',
         '',
-        'Enter Image Full Path With RAID Level, Windows Version',
-        'C:\\10GB.001 C:\\20GB.001 C:\\30GB.001 C:\\40GB.001 --level Parity --win Win10',
+        'Enter image full path with RAID level, windows version',
+        '-inputs C:\\10GB.001 C:\\20GB.001 C:\\30GB.001 C:\\40GB.001 -level simple -win win10 -output C:\\result',
         '']))
 
     def __init__(self):
@@ -62,18 +64,18 @@ class StorageSpaceReconstructorTool():
         date = datetime.now().strftime('%Y-%m-%d')
 
         argument_parser.add_argument(
-            '--win', '--windows_version', action='store', dest='windows_version', type=str, help='Enter an windows version of the target.')
+            '-win', '--windows_version', action='store', dest='windows_version', type=str, help='Enter an windows version of the target.')
 
         argument_parser.add_argument(
-            '--level', '--raid_level', action='store', dest='raid_level', type=str, help='Enter a RAID level of the target.')
-
-        ### source
-        argument_parser.add_argument(
-            '--inputs', action='store', dest='inputs', nargs='+', type=str, help='Enter sources for RAID reconstruction.')
+            '-level', '--raid_level', action='store', dest='raid_level', type=str, help='Enter a RAID level of the target.')
 
         ### source
         argument_parser.add_argument(
-            '--output', action='store', dest='output',
+            '-inputs', action='store', dest='inputs', nargs='+', type=str, help='Enter sources for RAID reconstruction.')
+
+        ### source
+        argument_parser.add_argument(
+            '-output', action='store', dest='output',
             default=None, type=str, help=(
                 'Enter an output path.'))
 
@@ -82,6 +84,8 @@ class StorageSpaceReconstructorTool():
         except UnicodeEncodeError:
             return False
 
+        if options.inputs == None or options.windows_version == None or options.raid_level == None:
+            return False
         #try:
         self.ParseOptions(options)
         # except Exception:
@@ -199,3 +203,6 @@ class StorageSpaceReconstructorTool():
         recon.parse_metadata()
 
         recon.restore_virtual_disk(output_path=self.output)
+
+    def ShowInfo(self):
+        print(self.NAME, self.VERSION, self.DESCRIPTION, self.EPILOG)

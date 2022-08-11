@@ -302,8 +302,11 @@ class Reconstructor:
                 if disk.name == b'':  # Metadata Area(SPACEDB, SDBC, SDBB) skip
                     continue
 
-                if output_path == None or os.path.exists(output_path) == False:
+                if output_path == None:# or os.path.exists(output_path) == False:
                     print("[Error] check output_path (" + output_path + ")")
+                    return False
+                if os.path.exists(output_path) == False:
+                    print("[Error] please make the output_path (" + output_path + ")")
                     return False
 
                 print("[*] Start Reconstruction.")

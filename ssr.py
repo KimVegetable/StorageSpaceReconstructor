@@ -17,6 +17,7 @@ def Main():
     tool = ssr_tool.StorageSpaceReconstructorTool()
 
     if not tool.ParseArguments(sys.argv[1:]):
+        tool.ShowInfo()
         return False
 
     if tool.show_info:
