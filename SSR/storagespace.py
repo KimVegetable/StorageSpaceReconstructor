@@ -92,7 +92,11 @@ class StorageSpace:
 
         self.partition_start_offset = partition_start_offset
 
+        if partition_start_offset == 0:
+            self.partition_start_offset = partition_start_offset = 0x8100000
+
         self.dp.seek(partition_start_offset)
+
         spacedb = self.dp.read(0x1000)
         if self.__parse_spacedb(spacedb):
             print("[*] SPACEDB Parsing Success.")
@@ -136,7 +140,7 @@ class StorageSpace:
             self.storage_pool_uuid = data[0x10:0x20]
             self.physical_disk_uuid = data[0x20:0x30]
             self.physical_disk_format_time = struct.unpack('>Q', data[0x58:0x60])[0]
-        elif self.version == Define.WINDOWS_10 or self.version == Define.WINDOWS_SERVER_2016 or self.version == Define.WINDOWS_SERVER_2019:  # Windows 10, Windows Server 2016, 2019
+        elif self.version == Define.WINDOWS_10 or self.version == Define.WINDOWS_SERVER_2016 or self.version == Define.WINDOWS_SERVER_2019 or self.version == Define.WINDOWS_11:  # Windows 10, Windows Server 2016, 2019
             self.physical_disk_format_time = struct.unpack('>Q', data[0x18:0x20])[0]
             self.storage_pool_uuid = data[0x20:0x30]
             self.physical_disk_uuid = data[0x30:0x40]

@@ -173,6 +173,8 @@ class StorageSpaceReconstructorTool():
             windows_version = define.Define.WINDOWS_SERVER_2016
         elif self.windows_version.lower() == 'winserver2019':
             windows_version = define.Define.WINDOWS_SERVER_2019
+        elif self.windows_version.lower() == 'win11':
+            windows_version = define.Define.WINDOWS_11
         else:
             print("Wrong Windows Version.")
             return False
