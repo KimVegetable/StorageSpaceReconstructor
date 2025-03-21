@@ -9,5 +9,7 @@ We developed a tool called Storage Space Reconstructor (SSR). This tool was deve
 
 You can download the testset from the above URL. And if you move the testset to the tests folder and run test_storagespace.py, you can use this tool.
 
+*If the reconstructed disk is not recognized by EnCase, AXIOM, or FTK Imager, I recommend trying Active Disk Editor as an alternative.*
+
 ##### Other information
 * Usage: https://github.com/KimVegetable/StorageSpaceReconstructor/wiki/Usage
